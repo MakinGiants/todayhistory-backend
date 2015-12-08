@@ -1,1 +1,23 @@
-hola
+<h1> Day in History services </h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>¿Qué paso?</th>
+      <th>¿Cuando?</th>
+      <th>Imagen</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @days.each do |day| %>
+      <tr>
+        <td><%= day.title %></td>
+        <td><%= day.date %></td>
+        <td><%= image_tag day.url %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
