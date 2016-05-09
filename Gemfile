@@ -18,6 +18,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'newrelic_rpm'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -45,5 +46,6 @@ group :development do
 end
 
 group :production do
+  gem 'pg'
   gem 'rails_12factor'
 end
