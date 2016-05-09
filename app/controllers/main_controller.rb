@@ -1,6 +1,6 @@
 class MainController < ApplicationController
   @@last_date = ""
-  @days = []
+  @@days = []
 
   def index
     @date_day = params[:d] || Time.now.day
@@ -11,10 +11,7 @@ class MainController < ApplicationController
 
     query_date = "#{Time.now.year}-#{@date_month}-#{@date_day}"
 
-    puts "Last: " + (@@last_date || "")
-    puts "New: " + query_date
-
-    if @@last_date != query_date
+    if @@last_date != query_date or @@days.length == 0
       doc = Nokogiri::HTML(open("#{Rails.application.config.history_api_url}/#{query_date}"))
       @@days = []
       doc.search(".contenido").each do |t|
@@ -29,7 +26,6 @@ class MainController < ApplicationController
     @@last_date = query_date
     
     respond_to do |format|
-       format.html # index.html.erb
        format.json  { render :json => @@days.to_json }
     end
     
@@ -45,7 +41,7 @@ class Day
     end
     
     def to_s
-       "#{@title} - #{@date} - #{image}"
+       "#{@title} - #{@date} - #{thumb}"
     end
 end
 
