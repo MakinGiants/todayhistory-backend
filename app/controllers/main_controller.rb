@@ -2,12 +2,12 @@ class MainController < ApplicationController
   
   def index
     time = Time.new
-    @date_day = params[:day] || time.day.to_s.rjust(2, '0')
-    @date_month = params[:month] || time.month.to_s.rjust(2, '0')
     
     uri = "http://mx.tuhistory.com/hoy-en-la-historia"
     date = "2015-#{@date_month}-#{@date_day}"
     doc = Nokogiri::HTML(open("#{uri}/#{date}"))
+    @date_day = params[:d].to_s.rjust(2, '0') || time.day.to_s.rjust(2, '0')
+    @date_month = params[:m].to_s.rjust(2, '0') || time.month.to_s.rjust(2, '0')
     
     @days = []
     doc.search(".contenido").each do |t|
