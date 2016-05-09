@@ -1,24 +1,36 @@
 class MainController < ApplicationController
-  
+  @@last_date = ""
+  @days = []
+
   def index
-    time = Time.new
-    @date_day = params[:d].to_s.rjust(2, '0') || time.day.to_s.rjust(2, '0')
-    @date_month = params[:m].to_s.rjust(2, '0') || time.month.to_s.rjust(2, '0')
+    @date_day = params[:d] || Time.now.day
+    @date_month = params[:m]|| Time.now.month
     
-    doc = Nokogiri::HTML(open("#{Rails.application.config.history_api_url}/#{Time.now.year}-#{@date_month}-#{@date_day}"))
+    @date_day = @date_day.to_s.rjust(2, '0')
+    @date_month = @date_month.to_s.rjust(2, '0')
 
-    @days = []
-    doc.search(".contenido").each do |t|
-        dTitle = t.search("h4 a").text
-        dDate = t.search("h6").text
-        dImage = Image.new(t.search(".content-image img"))
+    query_date = "#{Time.now.year}-#{@date_month}-#{@date_day}"
 
-        @days << Day.new(dTitle, dDate, dImage)
+    puts "Last: " + (@@last_date || "")
+    puts "New: " + query_date
+
+    if @@last_date != query_date
+      doc = Nokogiri::HTML(open("#{Rails.application.config.history_api_url}/#{query_date}"))
+      @@days = []
+      doc.search(".contenido").each do |t|
+          title = t.search("h4 a").text
+          date = t.search("h6").text
+          image = Image.new(t.search(".content-image img"))
+
+          @@days << Day.new(title, date, image)
+      end
     end
+    
+    @@last_date = query_date
     
     respond_to do |format|
        format.html # index.html.erb
-       format.json  { render :json => @days.to_json }
+       format.json  { render :json => @@days.to_json }
     end
     
   end
