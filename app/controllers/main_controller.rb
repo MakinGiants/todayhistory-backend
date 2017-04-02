@@ -12,8 +12,12 @@ class MainController < ApplicationController
     query_date = "#{Time.now.year}-#{@date_month}-#{@date_day}"
 
     if @@last_date != query_date or @@days.length == 0
-      doc = Nokogiri::HTML(open("#{Rails.application.config.history_api_url}/#{query_date}"))
+      url = "#{Rails.application.config.history_api_url}/#{query_date}"
+      puts url
+      
+      doc = Nokogiri::HTML(open(url))
       @@days = []
+      
       doc.search(".contenido").each do |t|
           title = t.search("h4 a").text
           date = t.search("h6").text
