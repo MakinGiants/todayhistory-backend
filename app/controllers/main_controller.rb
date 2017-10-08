@@ -18,8 +18,8 @@ class MainController < ApplicationController
       doc = Nokogiri::HTML(open(url))
       @@days = []
       
-      doc.search(".content").each do |t|
-          title = t.search("h4").text
+      doc.search(".contenido").each do |t|
+          title = t.search("h4 a").text
           date = t.search("h6").text
           image = Image.new(t.search(".content-image img"))
 
