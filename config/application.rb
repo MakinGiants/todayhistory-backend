@@ -35,6 +35,6 @@ module DayInHistory
     # Gzip compression  
     config.middleware.use Rack::Deflater
 
-    config.history_api_url = uri = "http://mx.tuhistory.com/hoy-en-la-historia"
+    config.history_api_url = uri = "https://mx.tuhistory.com/hoy-en-la-historia"
   end
 end
