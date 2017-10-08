@@ -18,7 +18,7 @@ class MainController < ApplicationController
       doc = Nokogiri::HTML(open(url))
       @@days = []
       
-      doc.search(".content").each do |t|
+      doc.search(".contenido").each do |t|
           title = t.search("h4").text
           date = t.search("h6").text
           image = Image.new(t.search(".content-image img"))
@@ -50,17 +50,15 @@ class Day
 end
 
 class Image
-  attr_accessor :src, :w, :h
+  attr_accessor :src
     def initialize(img)
        @src = img.attr('src').to_s
-       @w = img.attr('width').to_s.to_i
-       @h = img.attr('height').to_s.to_i
 
        @src.strip!
     end
 
      def to_s
-       "#{@w} - #{@h} - #{@src}"
+       "#{@src}"
     end
 end
 
