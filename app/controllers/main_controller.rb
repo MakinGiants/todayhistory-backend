@@ -13,11 +13,12 @@ class MainController < ApplicationController
 
     if @@last_date != query_date or @@days.length == 0
       url = "#{Rails.application.config.history_api_url}/#{query_date}"
+      puts url
       
       doc = Nokogiri::HTML(open(url))
       @@days = []
       
-      doc.search(".contenido").each do |t|
+      doc.search(".content").each do |t|
           title = t.search("h4").text
           date = t.search("h6").text
           image = Image.new(t.search(".content-image img"))
